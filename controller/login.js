@@ -7,10 +7,14 @@ async function login(req, res) {
         // ------------------------------
         // 1. CHECK IF TOKEN ALREADY EXISTS IN COOKIE
         // ------------------------------
+       
         const existingToken = req.cookies?.token;
+        console.log("Checking for existing token...",existingToken);
+        
 
         if (existingToken) {
             try {
+                console.log("Checking for existing token...",existingToken);
                 const decoded = jwt.verify(existingToken, process.env.JWT_SECRET_KEY);
                 console.log(decoded);
                 // Verify session exists in DB

@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 import loginRouter from '../router/login.js';
@@ -15,6 +17,8 @@ app.use(loginRouter)
 app.use(sendcodeRouter);
 app.use(registerRouter);
 app.use(verifyRouter);
+app.use(cookieParser());
 
 export default app;
+
 
