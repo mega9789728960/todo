@@ -34,6 +34,7 @@ async function login(req, res) {
                     });
                 }
             } catch (err) {
+                console.log(err);
                 // token invalid → ignore and continue normal login flow
             }
         }
