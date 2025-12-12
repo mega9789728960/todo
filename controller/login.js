@@ -12,7 +12,7 @@ async function login(req, res) {
         if (existingToken) {
             try {
                 const decoded = jwt.verify(existingToken, process.env.JWT_SECRET_KEY);
-
+                console.log(decoded);
                 // Verify session exists in DB
                 const sessionResult = await pool.query(
                     "SELECT * FROM todo_session WHERE token = $1 AND user_id = $2",
