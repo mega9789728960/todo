@@ -86,12 +86,13 @@ async function login(req, res) {
         );
 
         // Send cookie
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 24 * 60 * 60 * 1000
-        });
+      res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        // MUST be true on Vercel
+  sameSite: "none",    // MUST be none for cross-domain
+  maxAge: 24 * 60 * 60 * 1000
+});
+
         console.log(user.email,user.username);
 
         return res.status(200).json({
