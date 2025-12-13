@@ -7,6 +7,7 @@ import loginRouter from "../router/login.js";
 import sendcodeRouter from "../router/sendcode.js";
 import registerRouter from "../router/register.js";
 import verifyRouter from "../router/verifycode.js";
+import todoRouter from "../router/todo.js";
 
 dotenv.config();
 
@@ -32,5 +33,6 @@ app.use(loginRouter);
 app.use(sendcodeRouter);
 app.use(registerRouter);
 app.use(verifyRouter);
+app.use("/todo", todoRouter);
 
 export default app;
