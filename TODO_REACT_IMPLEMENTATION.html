@@ -1,575 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Application - React Implementation Guide</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo Application - React Implementation Guide</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
 
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
 
-        header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
+    header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
 
-        main {
-            padding: 40px;
-        }
+    main {
+      padding: 40px;
+    }
 
-        section {
-            margin-bottom: 40px;
-        }
+    section {
+      margin-bottom: 40px;
+    }
 
-        h2 {
-            color: #667eea;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
+    h2 {
+      color: #667eea;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
 
-        h3 {
-            color: #764ba2;
-            font-size: 1.3em;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
+    h3 {
+      color: #764ba2;
+      font-size: 1.3em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
 
-        h4 {
-            color: #555;
-            font-size: 1.1em;
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
+    h4 {
+      color: #555;
+      font-size: 1.1em;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
 
-        p, li {
-            margin-bottom: 12px;
-            line-height: 1.8;
-        }
+    p,
+    li {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
 
-        ul, ol {
-            margin-left: 25px;
-        }
+    ul,
+    ol {
+      margin-left: 25px;
+    }
 
-        li {
-            margin-bottom: 8px;
-        }
+    li {
+      margin-bottom: 8px;
+    }
 
-        code {
-            background: #f5f5f5;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            color: #d63384;
-        }
+    code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #d63384;
+    }
 
-        pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
 
-        .endpoint {
-            background: #f9f9f9;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
+    .endpoint {
+      background: #f9f9f9;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
 
-        .endpoint-method {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.9em;
-        }
+    .endpoint-method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 0.9em;
+    }
 
-        .post {
-            background: #dc3545;
-            color: white;
-        }
+    .post {
+      background: #dc3545;
+      color: white;
+    }
 
-        .get {
-            background: #28a745;
-            color: white;
-        }
+    .get {
+      background: #28a745;
+      color: white;
+    }
 
-        .put {
-            background: #ffc107;
-            color: black;
-        }
+    .put {
+      background: #ffc107;
+      color: black;
+    }
 
-        .delete {
-            background: #6c757d;
-            color: white;
-        }
+    .delete {
+      background: #6c757d;
+      color: white;
+    }
 
-        .endpoint-path {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            color: #333;
-        }
+    .endpoint-path {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      color: #333;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
 
-        table thead {
-            background: #667eea;
-            color: white;
-        }
+    table thead {
+      background: #667eea;
+      color: white;
+    }
 
-        table th {
-            padding: 12px;
-            text-align: left;
-            font-weight: bold;
-        }
+    table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+    }
 
-        table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ddd;
-        }
+    table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+    }
 
-        table tbody tr:hover {
-            background: #f5f5f5;
-        }
+    table tbody tr:hover {
+      background: #f5f5f5;
+    }
 
-        .requirement {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
+    .requirement {
+      background: #e7f3ff;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
 
-        .warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
+    .warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
 
-        .info {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
+    .info {
+      background: #d1ecf1;
+      border-left: 4px solid #17a2b8;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
 
-        .db-schema {
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 15px 0;
-        }
+    .db-schema {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 15px 0;
+    }
 
-        .flow-diagram {
-            background: #f9f9f9;
-            border: 2px dashed #667eea;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 4px;
-            text-align: center;
-        }
+    .flow-diagram {
+      background: #f9f9f9;
+      border: 2px dashed #667eea;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 4px;
+      text-align: center;
+    }
 
-        .step {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
+    .step {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
 
-        .step-number {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            margin-right: 10px;
-            font-weight: bold;
-        }
+    .step-number {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
 
-        .file-structure {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            overflow-x: auto;
-        }
+    .file-structure {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin: 15px 0;
+      overflow-x: auto;
+    }
 
-        footer {
-            background: #f5f5f5;
-            padding: 20px;
-            text-align: center;
-            border-top: 1px solid #ddd;
-            color: #666;
-        }
+    footer {
+      background: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      color: #666;
+    }
 
-        .anchor {
-            text-decoration: none;
-            color: #667eea;
-        }
+    .anchor {
+      text-decoration: none;
+      color: #667eea;
+    }
 
-        .anchor:hover {
-            text-decoration: underline;
-        }
+    .anchor:hover {
+      text-decoration: underline;
+    }
 
-        .toc {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 30px;
-        }
+    .toc {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
 
-        .toc h3 {
-            margin-top: 0;
-        }
+    .toc h3 {
+      margin-top: 0;
+    }
 
-        .toc ul {
-            list-style-type: none;
-            margin-left: 0;
-        }
+    .toc ul {
+      list-style-type: none;
+      margin-left: 0;
+    }
 
-        .toc li {
-            margin: 8px 0;
-        }
+    .toc li {
+      margin: 8px 0;
+    }
 
-        .toc a {
-            color: #667eea;
-            text-decoration: none;
-        }
+    .toc a {
+      color: #667eea;
+      text-decoration: none;
+    }
 
-        .toc a:hover {
-            text-decoration: underline;
-        }
+    .toc a:hover {
+      text-decoration: underline;
+    }
 
-        .code-example {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 10px 0;
-            overflow-x: auto;
-        }
+    .code-example {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8em;
+      }
 
-            main {
-                padding: 20px;
-            }
+      main {
+        padding: 20px;
+      }
 
-            table {
-                font-size: 0.9em;
-            }
-        }
-    </style>
+      table {
+        font-size: 0.9em;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>📝 Todo Application</h1>
-            <p>Complete React Implementation Guide for Backend Integration</p>
-        </header>
+  <div class="container">
+    <header>
+      <h1>📝 Todo Application</h1>
+      <p>Complete React Implementation Guide for Backend Integration</p>
+    </header>
 
-        <main>
-            <!-- Table of Contents -->
-            <section class="toc">
-                <h3>📚 Table of Contents</h3>
-                <ul>
-                    <li><a href="#overview">Project Overview</a></li>
-                    <li><a href="#tech-stack">Technology Stack</a></li>
-                    <li><a href="#setup">Environment Setup</a></li>
-                    <li><a href="#api-endpoints">API Endpoints</a></li>
-                    <li><a href="#auth-flow">Authentication Flow</a></li>
-                    <li><a href="#database">Database Schema</a></li>
-                    <li><a href="#react-setup">React Project Setup</a></li>
-                    <li><a href="#components">Component Structure</a></li>
-                    <li><a href="#implementation">Implementation Guide</a></li>
-                    <li><a href="#best-practices">Best Practices</a></li>
-                </ul>
-            </section>
+    <main>
+      <!-- Table of Contents -->
+      <section class="toc">
+        <h3>📚 Table of Contents</h3>
+        <ul>
+          <li><a href="#overview">Project Overview</a></li>
+          <li><a href="#tech-stack">Technology Stack</a></li>
+          <li><a href="#setup">Environment Setup</a></li>
+          <li><a href="#api-endpoints">API Endpoints</a></li>
+          <li><a href="#auth-flow">Authentication Flow</a></li>
+          <li><a href="#database">Database Schema</a></li>
+          <li><a href="#react-setup">React Project Setup</a></li>
+          <li><a href="#components">Component Structure</a></li>
+          <li><a href="#implementation">Implementation Guide</a></li>
+          <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+      </section>
 
-            <!-- Section 1: Overview -->
-            <section id="overview">
-                <h2>1. Project Overview</h2>
-                <p>This is a <strong>Todo Application</strong> with the following features:</p>
-                <ul>
-                    <li><strong>User Authentication</strong> - Register, Login, Email Verification</li>
-                    <li><strong>Email Verification</strong> - OTP-based email verification system</li>
-                    <li><strong>Session Management</strong> - JWT tokens with device tracking</li>
-                    <li><strong>Security Features</strong> - Password hashing with bcrypt, CORS protection</li>
-                    <li><strong>Auto-Login</strong> - Remember user sessions via cookies</li>
-                </ul>
+      <!-- Section 1: Overview -->
+      <section id="overview">
+        <h2>1. Project Overview</h2>
+        <p>This is a <strong>Todo Application</strong> with the following features:</p>
+        <ul>
+          <li><strong>User Authentication</strong> - Register, Login, Email Verification</li>
+          <li><strong>Email Verification</strong> - OTP-based email verification system</li>
+          <li><strong>Session Management</strong> - JWT tokens with device tracking</li>
+          <li><strong>Security Features</strong> - Password hashing with bcrypt, CORS protection</li>
+          <li><strong>Auto-Login</strong> - Remember user sessions via cookies</li>
+        </ul>
 
-                <div class="info">
-                    <strong>Note:</strong> The backend is built with Express.js and PostgreSQL. The React frontend will communicate with the API endpoints provided by this backend.
-                </div>
-            </section>
+        <div class="info">
+          <strong>Note:</strong> The backend is built with Express.js and PostgreSQL. The React frontend will
+          communicate with the API endpoints provided by this backend.
+        </div>
+      </section>
 
-            <!-- Section 2: Technology Stack -->
-            <section id="tech-stack">
-                <h2>2. Technology Stack</h2>
-                
-                <h3>Backend (Node.js/Express)</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Technology</th>
-                            <th>Version</th>
-                            <th>Purpose</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Express.js</td>
-                            <td>4.22.1</td>
-                            <td>Web framework and routing</td>
-                        </tr>
-                        <tr>
-                            <td>PostgreSQL</td>
-                            <td>Latest</td>
-                            <td>Database (via Supabase)</td>
-                        </tr>
-                        <tr>
-                            <td>JWT</td>
-                            <td>9.0.3</td>
-                            <td>Token-based authentication</td>
-                        </tr>
-                        <tr>
-                            <td>bcrypt</td>
-                            <td>6.0.0</td>
-                            <td>Password hashing</td>
-                        </tr>
-                        <tr>
-                            <td>Nodemailer</td>
-                            <td>7.0.11</td>
-                            <td>Email sending (OTP verification)</td>
-                        </tr>
-                        <tr>
-                            <td>CORS</td>
-                            <td>2.8.5</td>
-                            <td>Cross-origin requests</td>
-                        </tr>
-                    </tbody>
-                </table>
+      <!-- Section 2: Technology Stack -->
+      <section id="tech-stack">
+        <h2>2. Technology Stack</h2>
 
-                <h3>Frontend (React) - Recommended</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Technology</th>
-                            <th>Purpose</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>React 18+</td>
-                            <td>UI library</td>
-                        </tr>
-                        <tr>
-                            <td>React Router v6</td>
-                            <td>Client-side routing</td>
-                        </tr>
-                        <tr>
-                            <td>Axios</td>
-                            <td>HTTP client for API calls</td>
-                        </tr>
-                        <tr>
-                            <td>Context API / Redux</td>
-                            <td>State management</td>
-                        </tr>
-                        <tr>
-                            <td>TailwindCSS / Material-UI</td>
-                            <td>Styling</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+        <h3>Backend (Node.js/Express)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Version</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Express.js</td>
+              <td>4.22.1</td>
+              <td>Web framework and routing</td>
+            </tr>
+            <tr>
+              <td>PostgreSQL</td>
+              <td>Latest</td>
+              <td>Database (via Supabase)</td>
+            </tr>
+            <tr>
+              <td>JWT</td>
+              <td>9.0.3</td>
+              <td>Token-based authentication</td>
+            </tr>
+            <tr>
+              <td>bcrypt</td>
+              <td>6.0.0</td>
+              <td>Password hashing</td>
+            </tr>
+            <tr>
+              <td>Nodemailer</td>
+              <td>7.0.11</td>
+              <td>Email sending (OTP verification)</td>
+            </tr>
+            <tr>
+              <td>CORS</td>
+              <td>2.8.5</td>
+              <td>Cross-origin requests</td>
+            </tr>
+          </tbody>
+        </table>
 
-            <!-- Section 3: Setup -->
-            <section id="setup">
-                <h2>3. Environment Setup</h2>
+        <h3>Frontend (React) - Recommended</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>React 18+</td>
+              <td>UI library</td>
+            </tr>
+            <tr>
+              <td>React Router v6</td>
+              <td>Client-side routing</td>
+            </tr>
+            <tr>
+              <td>Axios</td>
+              <td>HTTP client for API calls</td>
+            </tr>
+            <tr>
+              <td>Context API / Redux</td>
+              <td>State management</td>
+            </tr>
+            <tr>
+              <td>TailwindCSS / Material-UI</td>
+              <td>Styling</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-                <h3>Backend Environment Variables (.env)</h3>
-                <p>Create a <code>.env</code> file in the backend directory with:</p>
-                <pre>NODE_ENV=production
+      <!-- Section 3: Setup -->
+      <section id="setup">
+        <h2>3. Environment Setup</h2>
+
+        <h3>Backend Environment Variables (.env)</h3>
+        <p>Create a <code>.env</code> file in the backend directory with:</p>
+        <pre>NODE_ENV=production
 JWT_SECRET_KEY=your_secret_key_here
 EMAIL_ID=your_gmail@gmail.com
 PASS_KEY=your_gmail_app_password
 DATABASE_URL=your_postgres_url</pre>
 
-                <div class="warning">
-                    <strong>⚠️ Security Warning:</strong> Never commit <code>.env</code> files to version control. The database credentials shown in the code are exposed and should be rotated immediately.
-                </div>
+        <div class="warning">
+          <strong>⚠️ Security Warning:</strong> Never commit <code>.env</code> files to version control. The database
+          credentials shown in the code are exposed and should be rotated immediately.
+        </div>
 
-                <h3>Verify Backend is Running</h3>
-                <pre>npm install
+        <h3>Verify Backend is Running</h3>
+        <pre>npm install
 npm run dev
 # Backend should be running on http://localhost:3000 (or specified port)</pre>
-            </section>
+      </section>
 
-            <!-- Section 4: API Endpoints -->
-            <section id="api-endpoints">
-                <h2>4. API Endpoints Reference</h2>
+      <!-- Section 4: API Endpoints -->
+      <section id="api-endpoints">
+        <h2>4. API Endpoints Reference</h2>
 
-                <h3>Authentication Endpoints</h3>
+        <h3>Authentication Endpoints</h3>
 
-                <!-- Send Code Endpoint -->
-                <div class="endpoint">
-                    <div>
-                        <span class="endpoint-method post">POST</span>
-                        <span class="endpoint-path">/sendcode</span>
-                    </div>
-                    <p><strong>Description:</strong> Send OTP verification code to email</p>
-                    <p><strong>Request Body:</strong></p>
-                    <pre>{
+        <!-- Send Code Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/sendcode</span>
+          </div>
+          <p><strong>Description:</strong> Send OTP verification code to email</p>
+          <p><strong>Request Body:</strong></p>
+          <pre>{
   "email": "user@example.com"
 }</pre>
-                    <p><strong>Success Response (200):</strong></p>
-                    <pre>{
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
   "success": true,
   "message": "OTP sent successfully",
   "token": "jwt_token_here"
 }</pre>
-                    <p><strong>Error Responses:</strong></p>
-                    <ul>
-                        <li>400: Email is required</li>
-                        <li>400: Please wait before requesting another OTP (5 min rate limit)</li>
-                        <li>500: Internal server error</li>
-                    </ul>
-                </div>
+          <p><strong>Error Responses:</strong></p>
+          <ul>
+            <li>400: Email is required</li>
+            <li>400: Please wait before requesting another OTP (5 min rate limit)</li>
+            <li>500: Internal server error</li>
+          </ul>
+        </div>
 
-                <!-- Verify Code Endpoint -->
-                <div class="endpoint">
-                    <div>
-                        <span class="endpoint-method post">POST</span>
-                        <span class="endpoint-path">/verifycode</span>
-                    </div>
-                    <p><strong>Description:</strong> Verify OTP code sent to email</p>
-                    <p><strong>Request Body:</strong></p>
-                    <pre>{
+        <!-- Verify Code Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/verifycode</span>
+          </div>
+          <p><strong>Description:</strong> Verify OTP code sent to email</p>
+          <p><strong>Request Body:</strong></p>
+          <pre>{
   "email": "user@example.com",
   "code": "1234",
   "token": "jwt_token_from_sendcode"
 }</pre>
-                    <p><strong>Success Response (200):</strong></p>
-                    <pre>{
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
   "message": "Verified successfully",
   "token": "final_verification_token"
 }</pre>
-                    <p><strong>Error Responses:</strong></p>
-                    <ul>
-                        <li>400: Please provide all the details</li>
-                        <li>404: Email not found</li>
-                        <li>401: Invalid token</li>
-                        <li>401: Invalid code</li>
-                    </ul>
-                </div>
+          <p><strong>Error Responses:</strong></p>
+          <ul>
+            <li>400: Please provide all the details</li>
+            <li>404: Email not found</li>
+            <li>401: Invalid token</li>
+            <li>401: Invalid code</li>
+          </ul>
+        </div>
 
-                <!-- Register Endpoint -->
-                <div class="endpoint">
-                    <div>
-                        <span class="endpoint-method post">POST</span>
-                        <span class="endpoint-path">/register</span>
-                    </div>
-                    <p><strong>Description:</strong> Register a new user (requires verified email)</p>
-                    <p><strong>Request Body:</strong></p>
-                    <pre>{
+        <!-- Register Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/register</span>
+          </div>
+          <p><strong>Description:</strong> Register a new user (requires verified email)</p>
+          <p><strong>Request Body:</strong></p>
+          <pre>{
   "email": "user@example.com",
   "username": "john_doe",
   "password": "securePassword123",
   "token": "verification_token_from_verifycode"
 }</pre>
-                    <p><strong>Success Response (200):</strong></p>
-                    <pre>{
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
   "message": "User registered successfully"
 }</pre>
-                    <p><strong>Error Responses:</strong></p>
-                    <ul>
-                        <li>400: Please enter all fields</li>
-                        <li>404: Email not found or OTP not sent</li>
-                        <li>403: Account is not verified</li>
-                        <li>403: Invalid token</li>
-                        <li>409: Email or username already in use</li>
-                    </ul>
-                </div>
+          <p><strong>Error Responses:</strong></p>
+          <ul>
+            <li>400: Please enter all fields</li>
+            <li>404: Email not found or OTP not sent</li>
+            <li>403: Account is not verified</li>
+            <li>403: Invalid token</li>
+            <li>409: Email or username already in use</li>
+          </ul>
+        </div>
 
-                <!-- Login Endpoint -->
-                <div class="endpoint">
-                    <div>
-                        <span class="endpoint-method post">POST</span>
-                        <span class="endpoint-path">/login</span>
-                    </div>
-                    <p><strong>Description:</strong> Login user with email and password</p>
-                    <p><strong>Request Body:</strong></p>
-                    <pre>{
+        <!-- Login Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/login</span>
+          </div>
+          <p><strong>Description:</strong> Login user with email and password</p>
+          <p><strong>Request Body:</strong></p>
+          <pre>{
   "email": "user@example.com",
   "password": "securePassword123"
 }</pre>
-                    <p><strong>Success Response (200):</strong></p>
-                    <pre>{
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
   "message": "Login successful",
   "user": {
     "email": "user@example.com",
     "username": "john_doe"
   }
 }</pre>
-                    <p><strong>Auto-Login (Existing Token in Cookie) Response (200):</strong></p>
-                    <pre>{
+          <p><strong>Auto-Login (Existing Token in Cookie) Response (200):</strong></p>
+          <pre>{
   "message": "Auto login successful",
   "user": {
     "id": "user_id",
@@ -577,168 +583,275 @@ npm run dev
     "username": "john_doe"
   }
 }</pre>
-                    <p><strong>Error Responses:</strong></p>
-                    <ul>
-                        <li>400: Email and password required</li>
-                        <li>401: Invalid email or password</li>
-                        <li>500: Internal server error</li>
-                    </ul>
-                    <p><strong>Cookie Set:</strong> <code>token</code> (httpOnly, 24 hours expiration)</p>
-                </div>
-            </section>
+          <p><strong>Error Responses:</strong></p>
+          <ul>
+            <li>400: Email and password required</li>
+            <li>401: Invalid email or password</li>
+            <li>500: Internal server error</li>
+          </ul>
+          <p><strong>Cookie Set:</strong> <code>token</code> (httpOnly, 24 hours expiration)</p>
+        </div>
 
-            <!-- Section 5: Authentication Flow -->
-            <section id="auth-flow">
-                <h2>5. Authentication Flow</h2>
+        <h3>Todo Endpoints</h3>
 
-                <h3>User Registration Flow</h3>
-                <div class="flow-diagram">
-                    User enters email → Send OTP → Verify Code → Register with credentials → Login
-                </div>
+        <!-- Create Todo Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/todo</span>
+          </div>
+          <p><strong>Description:</strong> Create a new todo item</p>
+          <p><strong>Auth:</strong> Required (Cookie/Bearer token)</p>
+          <p><strong>Request Body:</strong></p>
+          <pre>{
+  "title": "Buy groceries",
+  "description": "Milk, Eggs, Bread",
+  "priority": "high",
+  "due_date": "2023-12-31T23:59:59Z"
+}</pre>
+          <p><strong>Success Response (201):</strong></p>
+          <pre>{
+  "message": "Todo created successfully",
+  "todo": {
+    "id": 1,
+    "user_id": "uuid",
+    "title": "Buy groceries",
+    "priority": "high",
+    "status": "pending",
+    "created_at": "..."
+  }
+}</pre>
+        </div>
 
-                <div class="step">
-                    <strong><span class="step-number">1</span>Send Verification Code</strong>
-                    <p>User enters email address, frontend calls <code>POST /sendcode</code></p>
-                    <p><strong>Backend Action:</strong> Generates 4-digit OTP, sends via email, returns JWT token</p>
-                </div>
+        <!-- Get Todos Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/todo</span>
+          </div>
+          <p><strong>Description:</strong> Fetch all todos for the logged-in user</p>
+          <p><strong>Query Parameters:</strong></p>
+          <ul>
+            <li><code>status</code> (optional): Filter by status (e.g. 'pending', 'completed')</li>
+            <li><code>priority</code> (optional): Filter by priority ('low', 'medium', 'high')</li>
+          </ul>
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Buy groceries",
+      "status": "pending",
+      ...
+    }
+  ]
+}</pre>
+        </div>
 
-                <div class="step">
-                    <strong><span class="step-number">2</span>Verify OTP Code</strong>
-                    <p>User enters OTP from email, frontend calls <code>POST /verifycode</code></p>
-                    <p><strong>Backend Action:</strong> Validates OTP, sets email as verified in DB, returns verification token</p>
-                </div>
+        <!-- Update Todo Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method put">PUT</span>
+            <span class="endpoint-path">/todo/:id</span>
+          </div>
+          <p><strong>Description:</strong> Update an existing todo</p>
+          <p><strong>Request Body:</strong> (Provide only fields to update)</p>
+          <pre>{
+  "status": "completed",
+  "priority": "low"
+}</pre>
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
+  "message": "Todo updated successfully",
+  "todo": { ...updated_todo_object }
+}</pre>
+        </div>
 
-                <div class="step">
-                    <strong><span class="step-number">3</span>Register User</strong>
-                    <p>User enters username and password, frontend calls <code>POST /register</code></p>
-                    <p><strong>Backend Action:</strong> Creates user account, hashes password, stores in DB</p>
-                </div>
+        <!-- Delete Todo Endpoint -->
+        <div class="endpoint">
+          <div>
+            <span class="endpoint-method delete">DELETE</span>
+            <span class="endpoint-path">/todo/:id</span>
+          </div>
+          <p><strong>Description:</strong> Delete a todo item</p>
+          <p><strong>Success Response (200):</strong></p>
+          <pre>{
+  "message": "Todo deleted successfully",
+  "todo": { ...deleted_todo_object }
+}</pre>
+        </div>
+      </section>
 
-                <div class="step">
-                    <strong><span class="step-number">4</span>User Login</strong>
-                    <p>User logs in with email and password, frontend calls <code>POST /login</code></p>
-                    <p><strong>Backend Action:</strong> Validates credentials, generates JWT, stores session, sets cookie</p>
-                </div>
+      <!-- Section 5: Authentication Flow -->
+      <section id="auth-flow">
+        <h2>5. Authentication Flow</h2>
 
-                <h3>Auto-Login Flow</h3>
-                <div class="flow-diagram">
-                    User visits app → Check cookie → Validate JWT → Auto-login if valid → Show dashboard
-                </div>
+        <h3>User Registration Flow</h3>
+        <div class="flow-diagram">
+          User enters email → Send OTP → Verify Code → Register with credentials → Login
+        </div>
 
-                <p>When user returns to the app, the browser automatically sends the <code>token</code> cookie. The backend validates it and logs the user in automatically.</p>
+        <div class="step">
+          <strong><span class="step-number">1</span>Send Verification Code</strong>
+          <p>User enters email address, frontend calls <code>POST /sendcode</code></p>
+          <p><strong>Backend Action:</strong> Generates 4-digit OTP, sends via email, returns JWT token</p>
+        </div>
 
-                <h3>JWT Token Structure</h3>
-                <pre>{
+        <div class="step">
+          <strong><span class="step-number">2</span>Verify OTP Code</strong>
+          <p>User enters OTP from email, frontend calls <code>POST /verifycode</code></p>
+          <p><strong>Backend Action:</strong> Validates OTP, sets email as verified in DB, returns verification token
+          </p>
+        </div>
+
+        <div class="step">
+          <strong><span class="step-number">3</span>Register User</strong>
+          <p>User enters username and password, frontend calls <code>POST /register</code></p>
+          <p><strong>Backend Action:</strong> Creates user account, hashes password, stores in DB</p>
+        </div>
+
+        <div class="step">
+          <strong><span class="step-number">4</span>User Login</strong>
+          <p>User logs in with email and password, frontend calls <code>POST /login</code></p>
+          <p><strong>Backend Action:</strong> Validates credentials, generates JWT, stores session, sets cookie</p>
+        </div>
+
+        <h3>Auto-Login Flow</h3>
+        <div class="flow-diagram">
+          User visits app → Check cookie → Validate JWT → Auto-login if valid → Show dashboard
+        </div>
+
+        <p>When user returns to the app, the browser automatically sends the <code>token</code> cookie. The backend
+          validates it and logs the user in automatically.</p>
+
+        <h3>JWT Token Structure</h3>
+        <pre>{
   "id": "user_id",
   "email": "user@example.com",
   "iat": 1234567890,
   "exp": 1234571490
 }</pre>
 
-                <p><strong>Token Expiration:</strong> 2 hours (can be refreshed on login)</p>
-            </section>
+        <p><strong>Token Expiration:</strong> 2 hours (can be refreshed on login)</p>
+      </section>
 
-            <!-- Section 6: Database -->
-            <section id="database">
-                <h2>6. Database Schema</h2>
+      <!-- Section 6: Database -->
+      <section id="database">
+        <h2>6. Database Schema</h2>
 
-                <h3>Table: todo_users</h3>
-                <div class="db-schema">
-                    <strong>Columns:</strong>
-                    <ul>
-                        <li><code>id</code> (UUID, Primary Key) - Unique user identifier</li>
-                        <li><code>email</code> (VARCHAR, Unique) - User email address</li>
-                        <li><code>username</code> (VARCHAR, Unique) - Display name</li>
-                        <li><code>password</code> (VARCHAR) - Hashed password (bcrypt)</li>
-                        <li><code>created_at</code> (TIMESTAMP) - Account creation time</li>
-                    </ul>
-                </div>
+        <h3>Table: todo_users</h3>
+        <div class="db-schema">
+          <strong>Columns:</strong>
+          <ul>
+            <li><code>id</code> (UUID, Primary Key) - Unique user identifier</li>
+            <li><code>email</code> (VARCHAR, Unique) - User email address</li>
+            <li><code>username</code> (VARCHAR, Unique) - Display name</li>
+            <li><code>password</code> (VARCHAR) - Hashed password (bcrypt)</li>
+            <li><code>created_at</code> (TIMESTAMP) - Account creation time</li>
+          </ul>
+        </div>
 
-                <h3>Table: todo_email_verification</h3>
-                <div class="db-schema">
-                    <strong>Columns:</strong>
-                    <ul>
-                        <li><code>email</code> (VARCHAR, Primary Key) - Email being verified</li>
-                        <li><code>code</code> (INTEGER) - 4-digit OTP code</li>
-                        <li><code>token</code> (VARCHAR) - JWT token for this verification</li>
-                        <li><code>verified</code> (BOOLEAN) - Verification status</li>
-                        <li><code>created_at</code> (TIMESTAMP) - OTP creation time</li>
-                    </ul>
-                </div>
+        <h3>Table: todo_email_verification</h3>
+        <div class="db-schema">
+          <strong>Columns:</strong>
+          <ul>
+            <li><code>email</code> (VARCHAR, Primary Key) - Email being verified</li>
+            <li><code>code</code> (INTEGER) - 4-digit OTP code</li>
+            <li><code>token</code> (VARCHAR) - JWT token for this verification</li>
+            <li><code>verified</code> (BOOLEAN) - Verification status</li>
+            <li><code>created_at</code> (TIMESTAMP) - OTP creation time</li>
+          </ul>
+        </div>
 
-                <h3>Table: todo_session</h3>
-                <div class="db-schema">
-                    <strong>Columns:</strong>
-                    <ul>
-                        <li><code>id</code> (UUID, Primary Key) - Session identifier</li>
-                        <li><code>user_id</code> (UUID, Foreign Key) - References todo_users.id</li>
-                        <li><code>token</code> (VARCHAR) - JWT token</li>
-                        <li><code>device_name</code> (VARCHAR) - User agent / device info</li>
-                        <li><code>ip_address</code> (VARCHAR) - Client IP address</li>
-                        <li><code>created_at</code> (TIMESTAMP) - Session creation time</li>
-                    </ul>
-                </div>
+        <h3>Table: todo_session</h3>
+        <div class="db-schema">
+          <strong>Columns:</strong>
+          <ul>
+            <li><code>id</code> (UUID, Primary Key) - Session identifier</li>
+            <li><code>user_id</code> (UUID, Foreign Key) - References todo_users.id</li>
+            <li><code>token</code> (VARCHAR) - JWT token</li>
+            <li><code>device_name</code> (VARCHAR) - User agent / device info</li>
+            <li><code>ip_address</code> (VARCHAR) - Client IP address</li>
+            <li><code>created_at</code> (TIMESTAMP) - Session creation time</li>
+          </ul>
+        </div>
 
-                <div class="info">
-                    <strong>Database Provider:</strong> Supabase (PostgreSQL)
-                    <br><strong>Connection Pool:</strong> pg library with max 10 connections
-                </div>
-            </section>
+        <h3>Table: todos</h3>
+        <div class="db-schema">
+          <strong>Columns:</strong>
+          <ul>
+            <li><code>id</code> (SERIAL/INTEGER, Primary Key) - Auto-incrementing ID</li>
+            <li><code>user_id</code> (UUID, Foreign Key) - Owner of the todo</li>
+            <li><code>title</code> (VARCHAR, Not Null) - Todo title</li>
+            <li><code>description</code> (TEXT) - Detailed description</li>
+            <li><code>priority</code> (VARCHAR, Default 'medium') - 'low', 'medium', 'high'</li>
+            <li><code>status</code> (VARCHAR, Default 'pending') - 'pending', 'completed'</li>
+            <li><code>due_date</code> (TIMESTAMP) - Due date</li>
+            <li><code>created_at</code> (TIMESTAMP) - Creation time</li>
+            <li><code>updated_at</code> (TIMESTAMP) - Last update time</li>
+          </ul>
+        </div>
 
-            <!-- Section 7: React Setup -->
-            <section id="react-setup">
-                <h2>7. React Project Setup</h2>
+        <div class="info">
+          <strong>Database Provider:</strong> Supabase (PostgreSQL)
+          <br><strong>Connection Pool:</strong> pg library with max 10 connections
+        </div>
+      </section>
 
-                <h3>Create React App</h3>
-                <pre>npx create-react-app todo-app
+      <!-- Section 7: React Setup -->
+      <section id="react-setup">
+        <h2>7. React Project Setup</h2>
+
+        <h3>Create React App</h3>
+        <pre>npx create-react-app todo-app
 cd todo-app
 npm install axios react-router-dom</pre>
 
-                <h3>Optional - Install UI Libraries</h3>
-                <pre># TailwindCSS
+        <h3>Optional - Install UI Libraries</h3>
+        <pre># TailwindCSS
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
 # OR Material-UI
 npm install @mui/material @emotion/react @emotion/styled</pre>
 
-                <h3>Project Structure</h3>
-                <div class="file-structure">
-src/
-├── components/
-│   ├── Auth/
-│   │   ├── SendOTP.jsx
-│   │   ├── VerifyOTP.jsx
-│   │   ├── Register.jsx
-│   │   └── Login.jsx
-│   ├── Dashboard/
-│   │   └── Dashboard.jsx
-│   └── Common/
-│       ├── Navbar.jsx
-│       └── ProtectedRoute.jsx
-├── context/
-│   └── AuthContext.jsx
-├── services/
-│   ├── api.js
-│   └── authService.js
-├── pages/
-│   ├── Home.jsx
-│   ├── SignUp.jsx
-│   ├── SignIn.jsx
-│   └── NotFound.jsx
-├── App.jsx
-└── index.js
-                </div>
-            </section>
+        <h3>Project Structure</h3>
+        <div class="file-structure">
+          src/
+          ├── components/
+          │ ├── Auth/
+          │ │ ├── SendOTP.jsx
+          │ │ ├── VerifyOTP.jsx
+          │ │ ├── Register.jsx
+          │ │ └── Login.jsx
+          │ ├── Dashboard/
+          │ │ └── Dashboard.jsx
+          │ └── Common/
+          │ ├── Navbar.jsx
+          │ └── ProtectedRoute.jsx
+          ├── context/
+          │ └── AuthContext.jsx
+          ├── services/
+          │ ├── api.js
+          │ └── authService.js
+          ├── pages/
+          │ ├── Home.jsx
+          │ ├── SignUp.jsx
+          │ ├── SignIn.jsx
+          │ └── NotFound.jsx
+          ├── App.jsx
+          └── index.js
+        </div>
+      </section>
 
-            <!-- Section 8: Components -->
-            <section id="components">
-                <h2>8. Component Structure & Implementation</h2>
+      <!-- Section 8: Components -->
+      <section id="components">
+        <h2>8. Component Structure & Implementation</h2>
 
-                <h3>8.1 API Service (services/api.js)</h3>
-                <p>Centralized API client for all backend communications:</p>
-                <div class="code-example">
-<pre>import axios from 'axios';
+        <h3>8.1 API Service (services/api.js)</h3>
+        <p>Centralized API client for all backend communications:</p>
+        <div class="code-example">
+          <pre>import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
@@ -757,13 +870,20 @@ export const authService = {
     api.post('/login', { email, password }),
 };
 
-export default api;</pre>
-                </div>
+export const todoService = {
+  getAll: (filters = {}) => api.get('/todo', { params: filters }),
+  create: (data) => api.post('/todo', data),
+  update: (id, data) => api.put(`/todo/${id}`, data),
+  delete: (id) => api.delete(`/todo/${id}`),
+};
 
-                <h3>8.2 Auth Context (context/AuthContext.jsx)</h3>
-                <p>Global state management for authentication:</p>
-                <div class="code-example">
-<pre>import { createContext, useState, useEffect } from 'react';
+export default api;</pre>
+        </div>
+
+        <h3>8.2 Auth Context (context/AuthContext.jsx)</h3>
+        <p>Global state management for authentication:</p>
+        <div class="code-example">
+          <pre>import { createContext, useState, useEffect } from 'react';
 import api from '../services/api';
 
 export const AuthContext = createContext();
@@ -808,12 +928,12 @@ export const AuthProvider = ({ children }) => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.3 Send OTP Component (components/Auth/SendOTP.jsx)</h3>
-                <p>First step of registration - send OTP to email:</p>
-                <div class="code-example">
-<pre>import { useState } from 'react';
+        <h3>8.3 Send OTP Component (components/Auth/SendOTP.jsx)</h3>
+        <p>First step of registration - send OTP to email:</p>
+        <div class="code-example">
+          <pre>import { useState } from 'react';
 import { authService } from '../../services/api';
 
 export const SendOTP = ({ onSuccess }) => {
@@ -856,12 +976,12 @@ export const SendOTP = ({ onSuccess }) => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.4 Verify OTP Component (components/Auth/VerifyOTP.jsx)</h3>
-                <p>Verify the OTP code sent to email:</p>
-                <div class="code-example">
-<pre>import { useState } from 'react';
+        <h3>8.4 Verify OTP Component (components/Auth/VerifyOTP.jsx)</h3>
+        <p>Verify the OTP code sent to email:</p>
+        <div class="code-example">
+          <pre>import { useState } from 'react';
 import { authService } from '../../services/api';
 
 export const VerifyOTP = ({ email, token, onSuccess, onBack }) => {
@@ -908,12 +1028,12 @@ export const VerifyOTP = ({ email, token, onSuccess, onBack }) => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.5 Register Component (components/Auth/Register.jsx)</h3>
-                <p>Create user account with username and password:</p>
-                <div class="code-example">
-<pre>import { useState } from 'react';
+        <h3>8.5 Register Component (components/Auth/Register.jsx)</h3>
+        <p>Create user account with username and password:</p>
+        <div class="code-example">
+          <pre>import { useState } from 'react';
 import { authService } from '../../services/api';
 
 export const Register = ({ email, token, onSuccess }) => {
@@ -963,12 +1083,12 @@ export const Register = ({ email, token, onSuccess }) => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.6 Login Component (components/Auth/Login.jsx)</h3>
-                <p>Login with email and password:</p>
-                <div class="code-example">
-<pre>import { useState, useContext } from 'react';
+        <h3>8.6 Login Component (components/Auth/Login.jsx)</h3>
+        <p>Login with email and password:</p>
+        <div class="code-example">
+          <pre>import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 export const Login = ({ onSuccess }) => {
@@ -1018,11 +1138,11 @@ export const Login = ({ onSuccess }) => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.7 Protected Route Component</h3>
-                <div class="code-example">
-<pre>import { useContext } from 'react';
+        <h3>8.7 Protected Route Component</h3>
+        <div class="code-example">
+          <pre>import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -1038,11 +1158,11 @@ export const ProtectedRoute = ({ children }) => {
   return children;
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>8.8 Main App Component (App.jsx)</h3>
-                <div class="code-example">
-<pre>import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+        <h3>8.8 Main App Component (App.jsx)</h3>
+        <div class="code-example">
+          <pre>import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Login } from './components/Auth/Login';
 import { SignUp } from './pages/SignUp';
@@ -1072,21 +1192,21 @@ function App() {
 }
 
 export default App;</pre>
-                </div>
-            </section>
+        </div>
+      </section>
 
-            <!-- Section 9: Implementation -->
-            <section id="implementation">
-                <h2>9. Implementation Guide</h2>
+      <!-- Section 9: Implementation -->
+      <section id="implementation">
+        <h2>9. Implementation Guide</h2>
 
-                <h3>Step 1: Setup Backend Connection</h3>
-                <p>Create a <code>.env</code> file in your React project:</p>
-                <pre>REACT_APP_API_URL=http://localhost:3000</pre>
+        <h3>Step 1: Setup Backend Connection</h3>
+        <p>Create a <code>.env</code> file in your React project:</p>
+        <pre>REACT_APP_API_URL=http://localhost:3000</pre>
 
-                <h3>Step 2: Multi-Step Registration Page</h3>
-                <p>Create <code>pages/SignUp.jsx</code> with state management for multi-step flow:</p>
-                <div class="code-example">
-<pre>import { useState } from 'react';
+        <h3>Step 2: Multi-Step Registration Page</h3>
+        <p>Create <code>pages/SignUp.jsx</code> with state management for multi-step flow:</p>
+        <div class="code-example">
+          <pre>import { useState } from 'react';
 import { SendOTP } from '../components/Auth/SendOTP';
 import { VerifyOTP } from '../components/Auth/VerifyOTP';
 import { Register } from '../components/Auth/Register';
@@ -1131,12 +1251,12 @@ export const SignUp = () => {
   );
 };
 </pre>
-                </div>
+        </div>
 
-                <h3>Step 3: Environment Configuration</h3>
-                <p>Update your API service to use the correct base URL and handle credentials:</p>
-                <div class="code-example">
-<pre>// services/api.js
+        <h3>Step 3: Environment Configuration</h3>
+        <p>Update your API service to use the correct base URL and handle credentials:</p>
+        <div class="code-example">
+          <pre>// services/api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -1160,159 +1280,163 @@ api.interceptors.response.use(
 );
 
 export default api;</pre>
-                </div>
+        </div>
 
-                <h3>Step 4: Running the Application</h3>
-                <p><strong>Terminal 1 - Backend:</strong></p>
-                <pre>cd todo-backend
+        <h3>Step 4: Running the Application</h3>
+        <p><strong>Terminal 1 - Backend:</strong></p>
+        <pre>cd todo-backend
 npm run dev</pre>
 
-                <p><strong>Terminal 2 - Frontend:</strong></p>
-                <pre>cd todo-app
+        <p><strong>Terminal 2 - Frontend:</strong></p>
+        <pre>cd todo-app
 npm start</pre>
 
-                <p>Application will be available at <code>http://localhost:3000</code></p>
+        <p>Application will be available at <code>http://localhost:3000</code></p>
 
-                <h3>Step 5: Testing the Flow</h3>
-                <ol>
-                    <li>Open the app at <code>http://localhost:3000</code></li>
-                    <li>Click "Sign Up"</li>
-                    <li>Enter an email address</li>
-                    <li>Check your email for OTP (or check backend logs)</li>
-                    <li>Enter OTP to verify email</li>
-                    <li>Create username and password</li>
-                    <li>Register account</li>
-                    <li>Login with credentials</li>
-                    <li>Refresh page to test auto-login</li>
-                </ol>
-            </section>
+        <h3>Step 5: Testing the Flow</h3>
+        <ol>
+          <li>Open the app at <code>http://localhost:3000</code></li>
+          <li>Click "Sign Up"</li>
+          <li>Enter an email address</li>
+          <li>Check your email for OTP (or check backend logs)</li>
+          <li>Enter OTP to verify email</li>
+          <li>Create username and password</li>
+          <li>Register account</li>
+          <li>Login with credentials</li>
+          <li>Refresh page to test auto-login</li>
+        </ol>
+      </section>
 
-            <!-- Section 10: Best Practices -->
-            <section id="best-practices">
-                <h2>10. Best Practices</h2>
+      <!-- Section 10: Best Practices -->
+      <section id="best-practices">
+        <h2>10. Best Practices</h2>
 
-                <h3>Security</h3>
-                <ul>
-                    <li><strong>Passwords:</strong> Never send passwords in plain text. Use HTTPS in production.</li>
-                    <li><strong>Tokens:</strong> Store JWT in httpOnly cookies (done by backend)</li>
-                    <li><strong>CORS:</strong> Configure CORS properly to only allow your frontend domain</li>
-                    <li><strong>Credentials:</strong> Never commit <code>.env</code> files or secrets to Git</li>
-                    <li><strong>Environment:</strong> Use different API URLs for development and production</li>
-                </ul>
+        <h3>Security</h3>
+        <ul>
+          <li><strong>Passwords:</strong> Never send passwords in plain text. Use HTTPS in production.</li>
+          <li><strong>Tokens:</strong> Store JWT in httpOnly cookies (done by backend)</li>
+          <li><strong>CORS:</strong> Configure CORS properly to only allow your frontend domain</li>
+          <li><strong>Credentials:</strong> Never commit <code>.env</code> files or secrets to Git</li>
+          <li><strong>Environment:</strong> Use different API URLs for development and production</li>
+        </ul>
 
-                <h3>Performance</h3>
-                <ul>
-                    <li><strong>API Calls:</strong> Debounce OTP verification requests</li>
-                    <li><strong>Loading States:</strong> Show loading indicators to prevent double submissions</li>
-                    <li><strong>Error Handling:</strong> Implement proper error boundaries</li>
-                    <li><strong>Caching:</strong> Cache user data in context to avoid unnecessary API calls</li>
-                </ul>
+        <h3>Performance</h3>
+        <ul>
+          <li><strong>API Calls:</strong> Debounce OTP verification requests</li>
+          <li><strong>Loading States:</strong> Show loading indicators to prevent double submissions</li>
+          <li><strong>Error Handling:</strong> Implement proper error boundaries</li>
+          <li><strong>Caching:</strong> Cache user data in context to avoid unnecessary API calls</li>
+        </ul>
 
-                <h3>User Experience</h3>
-                <ul>
-                    <li><strong>Validation:</strong> Validate inputs before sending to backend</li>
-                    <li><strong>Feedback:</strong> Show clear error messages from API responses</li>
-                    <li><strong>Loading:</strong> Display loading spinners during API calls</li>
-                    <li><strong>Redirection:</strong> Redirect authenticated users away from login page</li>
-                </ul>
+        <h3>User Experience</h3>
+        <ul>
+          <li><strong>Validation:</strong> Validate inputs before sending to backend</li>
+          <li><strong>Feedback:</strong> Show clear error messages from API responses</li>
+          <li><strong>Loading:</strong> Display loading spinners during API calls</li>
+          <li><strong>Redirection:</strong> Redirect authenticated users away from login page</li>
+        </ul>
 
-                <h3>Code Quality</h3>
-                <ul>
-                    <li><strong>Components:</strong> Keep components small and focused</li>
-                    <li><strong>State Management:</strong> Use Context API for simple apps, Redux for complex ones</li>
-                    <li><strong>Error Handling:</strong> Catch all promise rejections</li>
-                    <li><strong>Logging:</strong> Log errors for debugging but not sensitive data</li>
-                </ul>
+        <h3>Code Quality</h3>
+        <ul>
+          <li><strong>Components:</strong> Keep components small and focused</li>
+          <li><strong>State Management:</strong> Use Context API for simple apps, Redux for complex ones</li>
+          <li><strong>Error Handling:</strong> Catch all promise rejections</li>
+          <li><strong>Logging:</strong> Log errors for debugging but not sensitive data</li>
+        </ul>
 
-                <h3>Testing</h3>
-                <ul>
-                    <li>Test registration flow with valid and invalid inputs</li>
-                    <li>Test OTP verification with wrong codes</li>
-                    <li>Test auto-login functionality</li>
-                    <li>Test protected routes</li>
-                    <li>Test network error handling</li>
-                </ul>
+        <h3>Testing</h3>
+        <ul>
+          <li>Test registration flow with valid and invalid inputs</li>
+          <li>Test OTP verification with wrong codes</li>
+          <li>Test auto-login functionality</li>
+          <li>Test protected routes</li>
+          <li>Test network error handling</li>
+        </ul>
 
-                <div class="requirement">
-                    <strong>📌 Important:</strong> Always test the complete authentication flow end-to-end before deploying to production.
-                </div>
-            </section>
+        <div class="requirement">
+          <strong>📌 Important:</strong> Always test the complete authentication flow end-to-end before deploying to
+          production.
+        </div>
+      </section>
 
-            <!-- Additional Section: Troubleshooting -->
-            <section>
-                <h2>11. Troubleshooting</h2>
+      <!-- Additional Section: Troubleshooting -->
+      <section>
+        <h2>11. Troubleshooting</h2>
 
-                <h3>Common Issues</h3>
+        <h3>Common Issues</h3>
 
-                <h4>CORS Error in Console</h4>
-                <p><strong>Problem:</strong> "Access to XMLHttpRequest ... blocked by CORS policy"</p>
-                <p><strong>Solution:</strong> Ensure backend has CORS enabled and frontend is making requests to correct API URL</p>
-                <pre>// Backend (should already be done)
+        <h4>CORS Error in Console</h4>
+        <p><strong>Problem:</strong> "Access to XMLHttpRequest ... blocked by CORS policy"</p>
+        <p><strong>Solution:</strong> Ensure backend has CORS enabled and frontend is making requests to correct API URL
+        </p>
+        <pre>// Backend (should already be done)
 app.use(cors());</pre>
 
-                <h4>Cookies Not Being Sent</h4>
-                <p><strong>Problem:</strong> Login works but user still shows as logged out</p>
-                <p><strong>Solution:</strong> Make sure axios has <code>withCredentials: true</code></p>
-                <pre>const api = axios.create({
+        <h4>Cookies Not Being Sent</h4>
+        <p><strong>Problem:</strong> Login works but user still shows as logged out</p>
+        <p><strong>Solution:</strong> Make sure axios has <code>withCredentials: true</code></p>
+        <pre>const api = axios.create({
   withCredentials: true
 });</pre>
 
-                <h4>OTP Email Not Received</h4>
-                <p><strong>Problem:</strong> User clicks "Send OTP" but never receives email</p>
-                <p><strong>Solution:</strong> Check backend environment variables for Gmail credentials</p>
-                <ul>
-                    <li>Make sure EMAIL_ID and PASS_KEY are set correctly</li>
-                    <li>Use Gmail App Password, not regular password</li>
-                    <li>Check backend logs for email sending errors</li>
-                </ul>
+        <h4>OTP Email Not Received</h4>
+        <p><strong>Problem:</strong> User clicks "Send OTP" but never receives email</p>
+        <p><strong>Solution:</strong> Check backend environment variables for Gmail credentials</p>
+        <ul>
+          <li>Make sure EMAIL_ID and PASS_KEY are set correctly</li>
+          <li>Use Gmail App Password, not regular password</li>
+          <li>Check backend logs for email sending errors</li>
+        </ul>
 
-                <h4>Auto-Login Not Working</h4>
-                <p><strong>Problem:</strong> User logs in, but refreshing the page logs them out</p>
-                <p><strong>Solution:</strong> Check if cookies are being set and sent correctly</p>
-                <ul>
-                    <li>Verify <code>withCredentials: true</code> in API client</li>
-                    <li>Check browser cookies (DevTools → Application → Cookies)</li>
-                    <li>Ensure backend is setting httpOnly cookies properly</li>
-                </ul>
+        <h4>Auto-Login Not Working</h4>
+        <p><strong>Problem:</strong> User logs in, but refreshing the page logs them out</p>
+        <p><strong>Solution:</strong> Check if cookies are being set and sent correctly</p>
+        <ul>
+          <li>Verify <code>withCredentials: true</code> in API client</li>
+          <li>Check browser cookies (DevTools → Application → Cookies)</li>
+          <li>Ensure backend is setting httpOnly cookies properly</li>
+        </ul>
 
-                <h4>Backend Connection Refused</h4>
-                <p><strong>Problem:</strong> "Cannot POST http://localhost:3000/login"</p>
-                <p><strong>Solution:</strong></p>
-                <ul>
-                    <li>Make sure backend is running (<code>npm run dev</code>)</li>
-                    <li>Check if backend is on correct port (default 3000)</li>
-                    <li>Update REACT_APP_API_URL if using different port</li>
-                </ul>
-            </section>
+        <h4>Backend Connection Refused</h4>
+        <p><strong>Problem:</strong> "Cannot POST http://localhost:3000/login"</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Make sure backend is running (<code>npm run dev</code>)</li>
+          <li>Check if backend is on correct port (default 3000)</li>
+          <li>Update REACT_APP_API_URL if using different port</li>
+        </ul>
+      </section>
 
-            <!-- Resources Section -->
-            <section>
-                <h2>12. Additional Resources</h2>
+      <!-- Resources Section -->
+      <section>
+        <h2>12. Additional Resources</h2>
 
-                <h3>Documentation Links</h3>
-                <ul>
-                    <li><a href="https://react.dev/" class="anchor" target="_blank">React Official Documentation</a></li>
-                    <li><a href="https://reactrouter.com/" class="anchor" target="_blank">React Router Documentation</a></li>
-                    <li><a href="https://axios-http.com/" class="anchor" target="_blank">Axios Documentation</a></li>
-                    <li><a href="https://expressjs.com/" class="anchor" target="_blank">Express.js Documentation</a></li>
-                    <li><a href="https://www.postgresql.org/docs/" class="anchor" target="_blank">PostgreSQL Documentation</a></li>
-                    <li><a href="https://jwt.io/" class="anchor" target="_blank">JWT Introduction</a></li>
-                </ul>
+        <h3>Documentation Links</h3>
+        <ul>
+          <li><a href="https://react.dev/" class="anchor" target="_blank">React Official Documentation</a></li>
+          <li><a href="https://reactrouter.com/" class="anchor" target="_blank">React Router Documentation</a></li>
+          <li><a href="https://axios-http.com/" class="anchor" target="_blank">Axios Documentation</a></li>
+          <li><a href="https://expressjs.com/" class="anchor" target="_blank">Express.js Documentation</a></li>
+          <li><a href="https://www.postgresql.org/docs/" class="anchor" target="_blank">PostgreSQL Documentation</a>
+          </li>
+          <li><a href="https://jwt.io/" class="anchor" target="_blank">JWT Introduction</a></li>
+        </ul>
 
-                <h3>Useful Tools</h3>
-                <ul>
-                    <li><strong>Postman:</strong> Test API endpoints without frontend</li>
-                    <li><strong>Mailtrap:</strong> Catch emails in development</li>
-                    <li><strong>Browser DevTools:</strong> Debug network requests and cookies</li>
-                    <li><strong>React Developer Tools:</strong> Browser extension for React debugging</li>
-                </ul>
-            </section>
-        </main>
+        <h3>Useful Tools</h3>
+        <ul>
+          <li><strong>Postman:</strong> Test API endpoints without frontend</li>
+          <li><strong>Mailtrap:</strong> Catch emails in development</li>
+          <li><strong>Browser DevTools:</strong> Debug network requests and cookies</li>
+          <li><strong>React Developer Tools:</strong> Browser extension for React debugging</li>
+        </ul>
+      </section>
+    </main>
 
-        <footer>
-            <p>&copy; 2024 Todo Application - React Implementation Documentation</p>
-            <p>For questions or updates, refer to the backend repository and official documentation links above.</p>
-        </footer>
-    </div>
+    <footer>
+      <p>&copy; 2024 Todo Application - React Implementation Documentation</p>
+      <p>For questions or updates, refer to the backend repository and official documentation links above.</p>
+    </footer>
+  </div>
 </body>
+
 </html>
