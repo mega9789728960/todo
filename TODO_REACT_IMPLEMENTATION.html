@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Application - React Implementation Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .endpoint {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+
+        .post {
+            background: #dc3545;
+            color: white;
+        }
+
+        .get {
+            background: #28a745;
+            color: white;
+        }
+
+        .put {
+            background: #ffc107;
+            color: black;
+        }
+
+        .delete {
+            background: #6c757d;
+            color: white;
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+
+        table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        .requirement {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .db-schema {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .flow-diagram {
+            background: #f9f9f9;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .step {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .file-structure {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+
+        .anchor {
+            text-decoration: none;
+            color: #667eea;
+        }
+
+        .anchor:hover {
+            text-decoration: underline;
+        }
+
+        .toc {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Todo Application</h1>
+            <p>Complete React Implementation Guide for Backend Integration</p>
+        </header>
+
+        <main>
+            <!-- Table of Contents -->
+            <section class="toc">
+                <h3>📚 Table of Contents</h3>
+                <ul>
+                    <li><a href="#overview">Project Overview</a></li>
+                    <li><a href="#tech-stack">Technology Stack</a></li>
+                    <li><a href="#setup">Environment Setup</a></li>
+                    <li><a href="#api-endpoints">API Endpoints</a></li>
+                    <li><a href="#auth-flow">Authentication Flow</a></li>
+                    <li><a href="#database">Database Schema</a></li>
+                    <li><a href="#react-setup">React Project Setup</a></li>
+                    <li><a href="#components">Component Structure</a></li>
+                    <li><a href="#implementation">Implementation Guide</a></li>
+                    <li><a href="#best-practices">Best Practices</a></li>
+                </ul>
+            </section>
+
+            <!-- Section 1: Overview -->
+            <section id="overview">
+                <h2>1. Project Overview</h2>
+                <p>This is a <strong>Todo Application</strong> with the following features:</p>
+                <ul>
+                    <li><strong>User Authentication</strong> - Register, Login, Email Verification</li>
+                    <li><strong>Email Verification</strong> - OTP-based email verification system</li>
+                    <li><strong>Session Management</strong> - JWT tokens with device tracking</li>
+                    <li><strong>Security Features</strong> - Password hashing with bcrypt, CORS protection</li>
+                    <li><strong>Auto-Login</strong> - Remember user sessions via cookies</li>
+                </ul>
+
+                <div class="info">
+                    <strong>Note:</strong> The backend is built with Express.js and PostgreSQL. The React frontend will communicate with the API endpoints provided by this backend.
+                </div>
+            </section>
+
+            <!-- Section 2: Technology Stack -->
+            <section id="tech-stack">
+                <h2>2. Technology Stack</h2>
+                
+                <h3>Backend (Node.js/Express)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technology</th>
+                            <th>Version</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Express.js</td>
+                            <td>4.22.1</td>
+                            <td>Web framework and routing</td>
+                        </tr>
+                        <tr>
+                            <td>PostgreSQL</td>
+                            <td>Latest</td>
+                            <td>Database (via Supabase)</td>
+                        </tr>
+                        <tr>
+                            <td>JWT</td>
+                            <td>9.0.3</td>
+                            <td>Token-based authentication</td>
+                        </tr>
+                        <tr>
+                            <td>bcrypt</td>
+                            <td>6.0.0</td>
+                            <td>Password hashing</td>
+                        </tr>
+                        <tr>
+                            <td>Nodemailer</td>
+                            <td>7.0.11</td>
+                            <td>Email sending (OTP verification)</td>
+                        </tr>
+                        <tr>
+                            <td>CORS</td>
+                            <td>2.8.5</td>
+                            <td>Cross-origin requests</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Frontend (React) - Recommended</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technology</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>React 18+</td>
+                            <td>UI library</td>
+                        </tr>
+                        <tr>
+                            <td>React Router v6</td>
+                            <td>Client-side routing</td>
+                        </tr>
+                        <tr>
+                            <td>Axios</td>
+                            <td>HTTP client for API calls</td>
+                        </tr>
+                        <tr>
+                            <td>Context API / Redux</td>
+                            <td>State management</td>
+                        </tr>
+                        <tr>
+                            <td>TailwindCSS / Material-UI</td>
+                            <td>Styling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 3: Setup -->
+            <section id="setup">
+                <h2>3. Environment Setup</h2>
+
+                <h3>Backend Environment Variables (.env)</h3>
+                <p>Create a <code>.env</code> file in the backend directory with:</p>
+                <pre>NODE_ENV=production
+JWT_SECRET_KEY=your_secret_key_here
+EMAIL_ID=your_gmail@gmail.com
+PASS_KEY=your_gmail_app_password
+DATABASE_URL=your_postgres_url</pre>
+
+                <div class="warning">
+                    <strong>⚠️ Security Warning:</strong> Never commit <code>.env</code> files to version control. The database credentials shown in the code are exposed and should be rotated immediately.
+                </div>
+
+                <h3>Verify Backend is Running</h3>
+                <pre>npm install
+npm run dev
+# Backend should be running on http://localhost:3000 (or specified port)</pre>
+            </section>
+
+            <!-- Section 4: API Endpoints -->
+            <section id="api-endpoints">
+                <h2>4. API Endpoints Reference</h2>
+
+                <h3>Authentication Endpoints</h3>
+
+                <!-- Send Code Endpoint -->
+                <div class="endpoint">
+                    <div>
+                        <span class="endpoint-method post">POST</span>
+                        <span class="endpoint-path">/sendcode</span>
+                    </div>
+                    <p><strong>Description:</strong> Send OTP verification code to email</p>
+                    <p><strong>Request Body:</strong></p>
+                    <pre>{
+  "email": "user@example.com"
+}</pre>
+                    <p><strong>Success Response (200):</strong></p>
+                    <pre>{
+  "success": true,
+  "message": "OTP sent successfully",
+  "token": "jwt_token_here"
+}</pre>
+                    <p><strong>Error Responses:</strong></p>
+                    <ul>
+                        <li>400: Email is required</li>
+                        <li>400: Please wait before requesting another OTP (5 min rate limit)</li>
+                        <li>500: Internal server error</li>
+                    </ul>
+                </div>
+
+                <!-- Verify Code Endpoint -->
+                <div class="endpoint">
+                    <div>
+                        <span class="endpoint-method post">POST</span>
+                        <span class="endpoint-path">/verifycode</span>
+                    </div>
+                    <p><strong>Description:</strong> Verify OTP code sent to email</p>
+                    <p><strong>Request Body:</strong></p>
+                    <pre>{
+  "email": "user@example.com",
+  "code": "1234",
+  "token": "jwt_token_from_sendcode"
+}</pre>
+                    <p><strong>Success Response (200):</strong></p>
+                    <pre>{
+  "message": "Verified successfully",
+  "token": "final_verification_token"
+}</pre>
+                    <p><strong>Error Responses:</strong></p>
+                    <ul>
+                        <li>400: Please provide all the details</li>
+                        <li>404: Email not found</li>
+                        <li>401: Invalid token</li>
+                        <li>401: Invalid code</li>
+                    </ul>
+                </div>
+
+                <!-- Register Endpoint -->
+                <div class="endpoint">
+                    <div>
+                        <span class="endpoint-method post">POST</span>
+                        <span class="endpoint-path">/register</span>
+                    </div>
+                    <p><strong>Description:</strong> Register a new user (requires verified email)</p>
+                    <p><strong>Request Body:</strong></p>
+                    <pre>{
+  "email": "user@example.com",
+  "username": "john_doe",
+  "password": "securePassword123",
+  "token": "verification_token_from_verifycode"
+}</pre>
+                    <p><strong>Success Response (200):</strong></p>
+                    <pre>{
+  "message": "User registered successfully"
+}</pre>
+                    <p><strong>Error Responses:</strong></p>
+                    <ul>
+                        <li>400: Please enter all fields</li>
+                        <li>404: Email not found or OTP not sent</li>
+                        <li>403: Account is not verified</li>
+                        <li>403: Invalid token</li>
+                        <li>409: Email or username already in use</li>
+                    </ul>
+                </div>
+
+                <!-- Login Endpoint -->
+                <div class="endpoint">
+                    <div>
+                        <span class="endpoint-method post">POST</span>
+                        <span class="endpoint-path">/login</span>
+                    </div>
+                    <p><strong>Description:</strong> Login user with email and password</p>
+                    <p><strong>Request Body:</strong></p>
+                    <pre>{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}</pre>
+                    <p><strong>Success Response (200):</strong></p>
+                    <pre>{
+  "message": "Login successful",
+  "user": {
+    "email": "user@example.com",
+    "username": "john_doe"
+  }
+}</pre>
+                    <p><strong>Auto-Login (Existing Token in Cookie) Response (200):</strong></p>
+                    <pre>{
+  "message": "Auto login successful",
+  "user": {
+    "id": "user_id",
+    "email": "user@example.com",
+    "username": "john_doe"
+  }
+}</pre>
+                    <p><strong>Error Responses:</strong></p>
+                    <ul>
+                        <li>400: Email and password required</li>
+                        <li>401: Invalid email or password</li>
+                        <li>500: Internal server error</li>
+                    </ul>
+                    <p><strong>Cookie Set:</strong> <code>token</code> (httpOnly, 24 hours expiration)</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Authentication Flow -->
+            <section id="auth-flow">
+                <h2>5. Authentication Flow</h2>
+
+                <h3>User Registration Flow</h3>
+                <div class="flow-diagram">
+                    User enters email → Send OTP → Verify Code → Register with credentials → Login
+                </div>
+
+                <div class="step">
+                    <strong><span class="step-number">1</span>Send Verification Code</strong>
+                    <p>User enters email address, frontend calls <code>POST /sendcode</code></p>
+                    <p><strong>Backend Action:</strong> Generates 4-digit OTP, sends via email, returns JWT token</p>
+                </div>
+
+                <div class="step">
+                    <strong><span class="step-number">2</span>Verify OTP Code</strong>
+                    <p>User enters OTP from email, frontend calls <code>POST /verifycode</code></p>
+                    <p><strong>Backend Action:</strong> Validates OTP, sets email as verified in DB, returns verification token</p>
+                </div>
+
+                <div class="step">
+                    <strong><span class="step-number">3</span>Register User</strong>
+                    <p>User enters username and password, frontend calls <code>POST /register</code></p>
+                    <p><strong>Backend Action:</strong> Creates user account, hashes password, stores in DB</p>
+                </div>
+
+                <div class="step">
+                    <strong><span class="step-number">4</span>User Login</strong>
+                    <p>User logs in with email and password, frontend calls <code>POST /login</code></p>
+                    <p><strong>Backend Action:</strong> Validates credentials, generates JWT, stores session, sets cookie</p>
+                </div>
+
+                <h3>Auto-Login Flow</h3>
+                <div class="flow-diagram">
+                    User visits app → Check cookie → Validate JWT → Auto-login if valid → Show dashboard
+                </div>
+
+                <p>When user returns to the app, the browser automatically sends the <code>token</code> cookie. The backend validates it and logs the user in automatically.</p>
+
+                <h3>JWT Token Structure</h3>
+                <pre>{
+  "id": "user_id",
+  "email": "user@example.com",
+  "iat": 1234567890,
+  "exp": 1234571490
+}</pre>
+
+                <p><strong>Token Expiration:</strong> 2 hours (can be refreshed on login)</p>
+            </section>
+
+            <!-- Section 6: Database -->
+            <section id="database">
+                <h2>6. Database Schema</h2>
+
+                <h3>Table: todo_users</h3>
+                <div class="db-schema">
+                    <strong>Columns:</strong>
+                    <ul>
+                        <li><code>id</code> (UUID, Primary Key) - Unique user identifier</li>
+                        <li><code>email</code> (VARCHAR, Unique) - User email address</li>
+                        <li><code>username</code> (VARCHAR, Unique) - Display name</li>
+                        <li><code>password</code> (VARCHAR) - Hashed password (bcrypt)</li>
+                        <li><code>created_at</code> (TIMESTAMP) - Account creation time</li>
+                    </ul>
+                </div>
+
+                <h3>Table: todo_email_verification</h3>
+                <div class="db-schema">
+                    <strong>Columns:</strong>
+                    <ul>
+                        <li><code>email</code> (VARCHAR, Primary Key) - Email being verified</li>
+                        <li><code>code</code> (INTEGER) - 4-digit OTP code</li>
+                        <li><code>token</code> (VARCHAR) - JWT token for this verification</li>
+                        <li><code>verified</code> (BOOLEAN) - Verification status</li>
+                        <li><code>created_at</code> (TIMESTAMP) - OTP creation time</li>
+                    </ul>
+                </div>
+
+                <h3>Table: todo_session</h3>
+                <div class="db-schema">
+                    <strong>Columns:</strong>
+                    <ul>
+                        <li><code>id</code> (UUID, Primary Key) - Session identifier</li>
+                        <li><code>user_id</code> (UUID, Foreign Key) - References todo_users.id</li>
+                        <li><code>token</code> (VARCHAR) - JWT token</li>
+                        <li><code>device_name</code> (VARCHAR) - User agent / device info</li>
+                        <li><code>ip_address</code> (VARCHAR) - Client IP address</li>
+                        <li><code>created_at</code> (TIMESTAMP) - Session creation time</li>
+                    </ul>
+                </div>
+
+                <div class="info">
+                    <strong>Database Provider:</strong> Supabase (PostgreSQL)
+                    <br><strong>Connection Pool:</strong> pg library with max 10 connections
+                </div>
+            </section>
+
+            <!-- Section 7: React Setup -->
+            <section id="react-setup">
+                <h2>7. React Project Setup</h2>
+
+                <h3>Create React App</h3>
+                <pre>npx create-react-app todo-app
+cd todo-app
+npm install axios react-router-dom</pre>
+
+                <h3>Optional - Install UI Libraries</h3>
+                <pre># TailwindCSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# OR Material-UI
+npm install @mui/material @emotion/react @emotion/styled</pre>
+
+                <h3>Project Structure</h3>
+                <div class="file-structure">
+src/
+├── components/
+│   ├── Auth/
+│   │   ├── SendOTP.jsx
+│   │   ├── VerifyOTP.jsx
+│   │   ├── Register.jsx
+│   │   └── Login.jsx
+│   ├── Dashboard/
+│   │   └── Dashboard.jsx
+│   └── Common/
+│       ├── Navbar.jsx
+│       └── ProtectedRoute.jsx
+├── context/
+│   └── AuthContext.jsx
+├── services/
+│   ├── api.js
+│   └── authService.js
+├── pages/
+│   ├── Home.jsx
+│   ├── SignUp.jsx
+│   ├── SignIn.jsx
+│   └── NotFound.jsx
+├── App.jsx
+└── index.js
+                </div>
+            </section>
+
+            <!-- Section 8: Components -->
+            <section id="components">
+                <h2>8. Component Structure & Implementation</h2>
+
+                <h3>8.1 API Service (services/api.js)</h3>
+                <p>Centralized API client for all backend communications:</p>
+                <div class="code-example">
+<pre>import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true, // Send cookies with requests
+});
+
+export const authService = {
+  sendOTP: (email) => api.post('/sendcode', { email }),
+  verifyOTP: (email, code, token) => 
+    api.post('/verifycode', { email, code, token }),
+  register: (email, username, password, token) => 
+    api.post('/register', { email, username, password, token }),
+  login: (email, password) => 
+    api.post('/login', { email, password }),
+};
+
+export default api;</pre>
+                </div>
+
+                <h3>8.2 Auth Context (context/AuthContext.jsx)</h3>
+                <p>Global state management for authentication:</p>
+                <div class="code-example">
+<pre>import { createContext, useState, useEffect } from 'react';
+import api from '../services/api';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check auto-login on app load
+    checkAutoLogin();
+  }, []);
+
+  const checkAutoLogin = async () => {
+    try {
+      const response = await api.post('/login', {});
+      if (response.data.user) {
+        setUser(response.data.user);
+      }
+    } catch (error) {
+      console.log('No existing session');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (email, password) => {
+    const response = await api.post('/login', { email, password });
+    setUser(response.data.user);
+    return response.data;
+  };
+
+  const logout = () => {
+    setUser(null);
+    // Optional: Clear cookies
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+</pre>
+                </div>
+
+                <h3>8.3 Send OTP Component (components/Auth/SendOTP.jsx)</h3>
+                <p>First step of registration - send OTP to email:</p>
+                <div class="code-example">
+<pre>import { useState } from 'react';
+import { authService } from '../../services/api';
+
+export const SendOTP = ({ onSuccess }) => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await authService.sendOTP(email);
+      onSuccess({
+        email,
+        token: response.data.token
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send OTP');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Sending...' : 'Send OTP'}
+      </button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </form>
+  );
+};
+</pre>
+                </div>
+
+                <h3>8.4 Verify OTP Component (components/Auth/VerifyOTP.jsx)</h3>
+                <p>Verify the OTP code sent to email:</p>
+                <div class="code-example">
+<pre>import { useState } from 'react';
+import { authService } from '../../services/api';
+
+export const VerifyOTP = ({ email, token, onSuccess, onBack }) => {
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await authService.verifyOTP(email, code, token);
+      onSuccess({
+        email,
+        token: response.data.token
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Enter OTP</h3>
+      <p>Code sent to {email}</p>
+      <input
+        type="text"
+        value={code}
+        onChange={(e) => setCode(e.target.value.slice(0, 4))}
+        placeholder="Enter 4-digit OTP"
+        maxLength="4"
+        required
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Verifying...' : 'Verify'}
+      </button>
+      <button type="button" onClick={onBack}>Back</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </form>
+  );
+};
+</pre>
+                </div>
+
+                <h3>8.5 Register Component (components/Auth/Register.jsx)</h3>
+                <p>Create user account with username and password:</p>
+                <div class="code-example">
+<pre>import { useState } from 'react';
+import { authService } from '../../services/api';
+
+export const Register = ({ email, token, onSuccess }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      await authService.register(email, username, password, token);
+      onSuccess();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Create Account</h3>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        minLength="6"
+        required
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating...' : 'Register'}
+      </button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </form>
+  );
+};
+</pre>
+                </div>
+
+                <h3>8.6 Login Component (components/Auth/Login.jsx)</h3>
+                <p>Login with email and password:</p>
+                <div class="code-example">
+<pre>import { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+
+export const Login = ({ onSuccess }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      await login(email, password);
+      onSuccess();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Login</h3>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </form>
+  );
+};
+</pre>
+                </div>
+
+                <h3>8.7 Protected Route Component</h3>
+                <div class="code-example">
+<pre>import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+
+export const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <div>Loading...</div>;
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+</pre>
+                </div>
+
+                <h3>8.8 Main App Component (App.jsx)</h3>
+                <div class="code-example">
+<pre>import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { Login } from './components/Auth/Login';
+import { SignUp } from './pages/SignUp';
+import { Dashboard } from './components/Dashboard/Dashboard';
+import { ProtectedRoute } from './components/Common/ProtectedRoute';
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;</pre>
+                </div>
+            </section>
+
+            <!-- Section 9: Implementation -->
+            <section id="implementation">
+                <h2>9. Implementation Guide</h2>
+
+                <h3>Step 1: Setup Backend Connection</h3>
+                <p>Create a <code>.env</code> file in your React project:</p>
+                <pre>REACT_APP_API_URL=http://localhost:3000</pre>
+
+                <h3>Step 2: Multi-Step Registration Page</h3>
+                <p>Create <code>pages/SignUp.jsx</code> with state management for multi-step flow:</p>
+                <div class="code-example">
+<pre>import { useState } from 'react';
+import { SendOTP } from '../components/Auth/SendOTP';
+import { VerifyOTP } from '../components/Auth/VerifyOTP';
+import { Register } from '../components/Auth/Register';
+
+export const SignUp = () => {
+  const [step, setStep] = useState('email'); // 'email' | 'otp' | 'register'
+  const [otpData, setOtpData] = useState(null);
+  const [verifyData, setVerifyData] = useState(null);
+
+  return (
+    <div className="signup-container">
+      {step === 'email' && (
+        <SendOTP onSuccess={(data) => {
+          setOtpData(data);
+          setStep('otp');
+        }} />
+      )}
+      
+      {step === 'otp' && otpData && (
+        <VerifyOTP
+          email={otpData.email}
+          token={otpData.token}
+          onSuccess={(data) => {
+            setVerifyData(data);
+            setStep('register');
+          }}
+          onBack={() => setStep('email')}
+        />
+      )}
+      
+      {step === 'register' && verifyData && (
+        <Register
+          email={verifyData.email}
+          token={verifyData.token}
+          onSuccess={() => {
+            alert('Registration successful! Please login.');
+            // Redirect to login
+          }}
+        />
+      )}
+    </div>
+  );
+};
+</pre>
+                </div>
+
+                <h3>Step 3: Environment Configuration</h3>
+                <p>Update your API service to use the correct base URL and handle credentials:</p>
+                <div class="code-example">
+<pre>// services/api.js
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true, // IMPORTANT for cookies
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
+
+// Error handling
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized - redirect to login
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;</pre>
+                </div>
+
+                <h3>Step 4: Running the Application</h3>
+                <p><strong>Terminal 1 - Backend:</strong></p>
+                <pre>cd todo-backend
+npm run dev</pre>
+
+                <p><strong>Terminal 2 - Frontend:</strong></p>
+                <pre>cd todo-app
+npm start</pre>
+
+                <p>Application will be available at <code>http://localhost:3000</code></p>
+
+                <h3>Step 5: Testing the Flow</h3>
+                <ol>
+                    <li>Open the app at <code>http://localhost:3000</code></li>
+                    <li>Click "Sign Up"</li>
+                    <li>Enter an email address</li>
+                    <li>Check your email for OTP (or check backend logs)</li>
+                    <li>Enter OTP to verify email</li>
+                    <li>Create username and password</li>
+                    <li>Register account</li>
+                    <li>Login with credentials</li>
+                    <li>Refresh page to test auto-login</li>
+                </ol>
+            </section>
+
+            <!-- Section 10: Best Practices -->
+            <section id="best-practices">
+                <h2>10. Best Practices</h2>
+
+                <h3>Security</h3>
+                <ul>
+                    <li><strong>Passwords:</strong> Never send passwords in plain text. Use HTTPS in production.</li>
+                    <li><strong>Tokens:</strong> Store JWT in httpOnly cookies (done by backend)</li>
+                    <li><strong>CORS:</strong> Configure CORS properly to only allow your frontend domain</li>
+                    <li><strong>Credentials:</strong> Never commit <code>.env</code> files or secrets to Git</li>
+                    <li><strong>Environment:</strong> Use different API URLs for development and production</li>
+                </ul>
+
+                <h3>Performance</h3>
+                <ul>
+                    <li><strong>API Calls:</strong> Debounce OTP verification requests</li>
+                    <li><strong>Loading States:</strong> Show loading indicators to prevent double submissions</li>
+                    <li><strong>Error Handling:</strong> Implement proper error boundaries</li>
+                    <li><strong>Caching:</strong> Cache user data in context to avoid unnecessary API calls</li>
+                </ul>
+
+                <h3>User Experience</h3>
+                <ul>
+                    <li><strong>Validation:</strong> Validate inputs before sending to backend</li>
+                    <li><strong>Feedback:</strong> Show clear error messages from API responses</li>
+                    <li><strong>Loading:</strong> Display loading spinners during API calls</li>
+                    <li><strong>Redirection:</strong> Redirect authenticated users away from login page</li>
+                </ul>
+
+                <h3>Code Quality</h3>
+                <ul>
+                    <li><strong>Components:</strong> Keep components small and focused</li>
+                    <li><strong>State Management:</strong> Use Context API for simple apps, Redux for complex ones</li>
+                    <li><strong>Error Handling:</strong> Catch all promise rejections</li>
+                    <li><strong>Logging:</strong> Log errors for debugging but not sensitive data</li>
+                </ul>
+
+                <h3>Testing</h3>
+                <ul>
+                    <li>Test registration flow with valid and invalid inputs</li>
+                    <li>Test OTP verification with wrong codes</li>
+                    <li>Test auto-login functionality</li>
+                    <li>Test protected routes</li>
+                    <li>Test network error handling</li>
+                </ul>
+
+                <div class="requirement">
+                    <strong>📌 Important:</strong> Always test the complete authentication flow end-to-end before deploying to production.
+                </div>
+            </section>
+
+            <!-- Additional Section: Troubleshooting -->
+            <section>
+                <h2>11. Troubleshooting</h2>
+
+                <h3>Common Issues</h3>
+
+                <h4>CORS Error in Console</h4>
+                <p><strong>Problem:</strong> "Access to XMLHttpRequest ... blocked by CORS policy"</p>
+                <p><strong>Solution:</strong> Ensure backend has CORS enabled and frontend is making requests to correct API URL</p>
+                <pre>// Backend (should already be done)
+app.use(cors());</pre>
+
+                <h4>Cookies Not Being Sent</h4>
+                <p><strong>Problem:</strong> Login works but user still shows as logged out</p>
+                <p><strong>Solution:</strong> Make sure axios has <code>withCredentials: true</code></p>
+                <pre>const api = axios.create({
+  withCredentials: true
+});</pre>
+
+                <h4>OTP Email Not Received</h4>
+                <p><strong>Problem:</strong> User clicks "Send OTP" but never receives email</p>
+                <p><strong>Solution:</strong> Check backend environment variables for Gmail credentials</p>
+                <ul>
+                    <li>Make sure EMAIL_ID and PASS_KEY are set correctly</li>
+                    <li>Use Gmail App Password, not regular password</li>
+                    <li>Check backend logs for email sending errors</li>
+                </ul>
+
+                <h4>Auto-Login Not Working</h4>
+                <p><strong>Problem:</strong> User logs in, but refreshing the page logs them out</p>
+                <p><strong>Solution:</strong> Check if cookies are being set and sent correctly</p>
+                <ul>
+                    <li>Verify <code>withCredentials: true</code> in API client</li>
+                    <li>Check browser cookies (DevTools → Application → Cookies)</li>
+                    <li>Ensure backend is setting httpOnly cookies properly</li>
+                </ul>
+
+                <h4>Backend Connection Refused</h4>
+                <p><strong>Problem:</strong> "Cannot POST http://localhost:3000/login"</p>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>Make sure backend is running (<code>npm run dev</code>)</li>
+                    <li>Check if backend is on correct port (default 3000)</li>
+                    <li>Update REACT_APP_API_URL if using different port</li>
+                </ul>
+            </section>
+
+            <!-- Resources Section -->
+            <section>
+                <h2>12. Additional Resources</h2>
+
+                <h3>Documentation Links</h3>
+                <ul>
+                    <li><a href="https://react.dev/" class="anchor" target="_blank">React Official Documentation</a></li>
+                    <li><a href="https://reactrouter.com/" class="anchor" target="_blank">React Router Documentation</a></li>
+                    <li><a href="https://axios-http.com/" class="anchor" target="_blank">Axios Documentation</a></li>
+                    <li><a href="https://expressjs.com/" class="anchor" target="_blank">Express.js Documentation</a></li>
+                    <li><a href="https://www.postgresql.org/docs/" class="anchor" target="_blank">PostgreSQL Documentation</a></li>
+                    <li><a href="https://jwt.io/" class="anchor" target="_blank">JWT Introduction</a></li>
+                </ul>
+
+                <h3>Useful Tools</h3>
+                <ul>
+                    <li><strong>Postman:</strong> Test API endpoints without frontend</li>
+                    <li><strong>Mailtrap:</strong> Catch emails in development</li>
+                    <li><strong>Browser DevTools:</strong> Debug network requests and cookies</li>
+                    <li><strong>React Developer Tools:</strong> Browser extension for React debugging</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Todo Application - React Implementation Documentation</p>
+            <p>For questions or updates, refer to the backend repository and official documentation links above.</p>
+        </footer>
+    </div>
+</body>
+</html>
